@@ -123,9 +123,17 @@ func (a *AnimeHandlers) GetAnimeEpisodeSrc(c echo.Context) error {
 	var episode models.Episode
 	animeRepository.DB.Model(&models.Episode{}).Select("link").Where("id = ?", id).First(&episode)
 
+	if episode.Link == "" {
+		return responses.ErrorResponse(c, 404, "Not found")
+	}
+
 	src, err := scrapper.ScrapeEpisode(episode.Link)
 	if err != nil {
 		return err
+	}
+
+	if src == nil {
+		return responses.ErrorResponse(c, 400, "Error getting the source")
 	}
 
 	return responses.Response(c, http.StatusOK, src.Src)

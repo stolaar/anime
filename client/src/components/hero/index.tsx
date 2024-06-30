@@ -35,24 +35,27 @@ export const Hero = () => {
 
   const navigate = useNavigate()
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-stone-700 to-stone-500">
-      <section className="flex w-full py-32 md:py-48">
-        <div className={`flex w-full flex-1 flex-row justify-center space-x-4 p-10`}>
-          {animes.map((anime) => (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 py-8 text-white">
+      <div className="container mx-auto px-4">
+        <div className="mb-8 flex items-center justify-end">
+          <input type="text" placeholder="Search..." value={''} className="rounded-lg px-4 py-2 text-black" />
+        </div>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {animes.map((anime, index) => (
             <div
-              key={anime.id}
-              style={{
-                backgroundImage: `url("${anime.image.replace('100', '4000')}")`,
-              }}
-              className={`flex-column relative flex max-h-72 w-56 cursor-pointer  flex-wrap justify-center space-x-2 bg-cover  bg-no-repeat align-bottom`}
+              key={index}
+              className="transform cursor-pointer overflow-hidden rounded-lg bg-white shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
               onClick={() => navigate(`/anime/${anime.id}`)}
             >
-              <div className="absolute h-full w-full bg-gradient-to-b from-transparent to-stone-500" />
-              <h4 className="z-10 mx-auto mt-auto text-lg font-semibold text-white">{anime.title}</h4>
+              <img src={anime.image?.replace('100', '900')} alt={anime.title} className="h-48 w-full object-cover" />
+              <div className="p-4 text-black">
+                <h2 className="text-2xl font-semibold">{anime.title}</h2>
+              </div>
             </div>
           ))}
+          {animes.length === 0 && <p className="col-span-full text-center">No animes found</p>}
         </div>
-      </section>
+      </div>
     </div>
   )
 }

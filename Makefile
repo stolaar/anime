@@ -13,4 +13,4 @@ dev-api:
 	- cd api && go run cmd/main.go
 
 dev-client:
-	- cd frontend && yarn dev
+	- cd client && yarn dev

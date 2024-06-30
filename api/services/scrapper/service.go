@@ -117,9 +117,9 @@ func ScrapeEpisode(url string) (*models.Episode, error) {
 		chromedp.Tasks{
 			chromedp.ActionFunc(AddStealthScript),
 			chromedp.Navigate(url),
-			chromedp.WaitReady(".content"),
-			chromedp.Click(".player-btn"),
-			chromedp.Click(".player-btn"),
+			chromedp.WaitReady(".wrapper > main"),
+			chromedp.Click("div#player > div"),
+			chromedp.Click("div#player > div"),
 			chromedp.Sleep(1 * time.Second),
 			chromedp.Nodes(`iframe`, &iframes),
 		})
