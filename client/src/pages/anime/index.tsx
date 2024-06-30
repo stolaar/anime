@@ -2,16 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { IEpisode } from 'src/components/hero'
 
 export const Anime = () => {
   const params = useParams()
-  const [current, setEpisode] = useState<any>(null)
+  const [current, setEpisode] = useState<IEpisode | null>(null)
 
   const { data: episodes = [] } = useQuery({
     enabled: !!params.id,
     queryKey: ['animes', params.id],
     queryFn: async ({ signal }) => {
-      const { data } = await axios.get(`/api/anime-episodes/${params.id}`, {
+      const { data } = await axios.get<IEpisode[]>(`/api/animes/${params.id}`, {
         signal,
       })
 
@@ -25,13 +26,10 @@ export const Anime = () => {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ['src', current?.Link],
+    queryKey: ['src', current?.link],
     queryFn: async ({ signal }) => {
-      const { data } = await axios.get(`/api/episode`, {
+      const { data } = await axios.get<string>(`/api/episode/${current?.id}/src`, {
         signal,
-        params: {
-          link: current?.Link,
-        },
       })
 
       return data
@@ -57,17 +55,17 @@ export const Anime = () => {
       <div
         className={`space-2 flex max-h-96 w-full flex-1 flex-row flex-wrap justify-between gap-2 overflow-y-auto p-2`}
       >
-        {episodes.map((episode: any) => (
+        {episodes.map((episode) => (
           <span
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               setEpisode(episode)
             }}
-            key={episode.Link}
+            key={episode.link}
             className={`text-md flex h-8 w-12 cursor-pointer flex-wrap justify-center border-2 border-gray-50 p-1 text-center font-semibold text-white`}
           >
-            {episode.Title}
+            {episode.title}
           </span>
         ))}
       </div>
