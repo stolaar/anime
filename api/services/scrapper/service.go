@@ -69,6 +69,7 @@ func ScrapeAnimesByQuery(query string) ([]*models.Anime, error) {
 			chromedp.ActionFunc(AddStealthScript),
 			chromedp.Navigate(BaseUrl),
 			chromedp.WaitReady(inputSelector),
+			chromedp.Sleep(2 * time.Second),
 			chromedp.Click(inputSelector),
 			chromedp.Focus(inputSelector),
 			chromedp.SendKeys(inputSelector, query),
@@ -117,7 +118,8 @@ func ScrapeEpisode(url string) (*models.Episode, error) {
 		chromedp.Tasks{
 			chromedp.ActionFunc(AddStealthScript),
 			chromedp.Navigate(url),
-			chromedp.WaitReady(".wrapper > main"),
+			chromedp.WaitReady(".content"),
+			chromedp.Sleep(3 * time.Second),
 			chromedp.Click("div#player > div"),
 			chromedp.Click("div#player > div"),
 			chromedp.Sleep(1 * time.Second),
